@@ -52,6 +52,21 @@ function isEmpty() {
     return result;
 }
 
+function testsSlides(linha, coluna) {
+    for (let c = 0; c < column; c++) {
+        // if (gameBoard[linha][c] === gameBoard[linha][c + 1] && gameBoard[linha][c + 1] !== 0) {
+
+        // } else if ()
+        if (gameBoard[linha][c + 1] === undefined) {
+            return;
+        } else if (gameBoard[linha][c] === gameBoard[linha][c + 1] && gameBoard[linha][c + 1] !== 0) {
+            gameBoard[linha][c] += gameBoard[linha][c + 1];
+        } else if (gameBoard[linha][c + 1] === 0) {
+           
+        }
+    }
+}
+
 function slideRight() {
     for (let r = 0; r < row; r++) {
         for (let c = 0; c < column; c++) {
@@ -98,5 +113,3 @@ function slideDown() {
 fillContainer()
 generate()
 generate()
-console.log(isEmpty())
-console.log(isEmpty())
