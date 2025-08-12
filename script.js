@@ -2,10 +2,10 @@ const row = 4;
 const column = 4;
 
 let gameBoard = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [128, 0, 128, 2],
+    [0, 2, 0, 2],
+    [4, 0, 2, 0],
+    [8, 8, 16, 16]
 ]
 
 function fillContainer() {
@@ -52,63 +52,77 @@ function isEmpty() {
     return result;
 }
 
-function testsSlides(linha, coluna) {
-    for (let c = 0; c < column; c++) {
-        // if (gameBoard[linha][c] === gameBoard[linha][c + 1] && gameBoard[linha][c + 1] !== 0) {
+function moveRight(row) {
+    // 1. Empurra para a direita (remove zeros no meio)
+    row = row.filter(v => v !== 0); // remove zeros
+    while (row.length < 4) row.unshift(0); // preenche com zeros na frente
 
-        // } else if ()
-        if (gameBoard[linha][c + 1] === undefined) {
-            return;
-        } else if (gameBoard[linha][c] === gameBoard[linha][c + 1] && gameBoard[linha][c + 1] !== 0) {
-            gameBoard[linha][c] += gameBoard[linha][c + 1];
-        } else if (gameBoard[linha][c + 1] === 0) {
-           
+    // 2. Faz as fusões (da direita para esquerda)
+    for (let c = 3; c > 0; c--) {
+        if (row[c] === row[c - 1] && row[c] !== 0) {
+            row[c] *= 2;       // soma
+            row[c - 1] = 0;    // posição anterior vira zero
         }
     }
+
+    // 3. Empurra de novo para a direita
+    row = row.filter(v => v !== 0);
+    while (row.length < 4) row.unshift(0);
+
+    return row;
 }
 
-function slideRight() {
-    for (let r = 0; r < row; r++) {
-        for (let c = 0; c < column; c++) {
-            if (gameBoard[r][c] === gameBoard[r][c + 1] && gameBoard[r][c] !== 0) {
-                gameBoard[r][c] += gameBoard[r][c + 1];
-            } else if (gameBoard[r][c + 1] === 0 && gameBoard[r][c + 2] === 0) {
-                gameBoard[r][c] = gameBoard[3][c]
-                gameBoard[r][c] = 0;
-            }
+function moveLeft(row) {
+    // 1. Empurra para a direita (remove zeros no meio)
+    row = row.filter(v => v !== 0); // remove zeros
+    while (row.length < 4) row.push(0); // preenche com zeros na frente
+
+    // 2. Faz as fusões (da direita para esquerda)
+    for (let c = 0; c < 3; c++) {
+        if (row[c] === row[c + 1] && row[c] !== 0) {
+            row[c] *= 2;       // soma
+            row[c + 1] = 0;    // posição anterior vira zero
         }
     }
+
+    // 3. Empurra de novo para a direita
+    row = row.filter(v => v !== 0);
+    while (row.length < 4) row.push(0);
+
+    return row;
 }
 
-function slideLeft() {
-    for (let r = 0; r < row; r++) {
-        for (let c = 0; c < column; c++) {
-            if (gameBoard[r][c] === gameBoard[r - 1][c]) {
-                gameBoard[r][c] += gameBoard[r - 1][c];
-            }
+function moveUp(column) {
+    // 1. Empurra para a direita (remove zeros no meio)
+    column = column.filter(v => v !== 0); // remove zeros
+    while (column.length < 4) column.push(0); // preenche com zeros na frente
+
+    // 2. Faz as fusões (da direita para esquerda)
+    for (let c = 0; c < 3; c++) {
+        if (column[c] === column[c + 1] && column[c] !== 0) {
+            column[c] *= 2;       // soma
+            column[c + 1] = 0;    // posição anterior vira zero
         }
     }
+
+    // 3. Empurra de novo para a direita
+    column = column.filter(v => v !== 0);
+    while (column.length < 4) column.push(0);
+
+    return column;
 }
 
-function slideUp() {
-    for (let r = 0; r < row; r++) {
-        for (let c = 0; c < column; c++) {
-            if (gameBoard[r][c] === gameBoard[r][c - 1]) {
-                gameBoard[r][c] += gameBoard[r][c - 1];
-            }
-        }
-    }
+// for (let i = 0; i < gameBoard.length; i++) {
+//     gameBoard[i] = moveRight(gameBoard[i]);
+// }
+
+for (let i = 0; i < gameBoard.length; i++) {
+    gameBoard[i] = moveLeft(gameBoard[i]);
 }
 
-function slideDown() {
-    for (let r = 0; r < row; r++) {
-        for (let c = 0; c < column; c++) {
-            if (gameBoard[r][c] === gameBoard[r][c + 1]) {
-                gameBoard[r][c] += gameBoard[r][c + 1];
-            }
-        }
-    }
-}
+console.log(gameBoard)
+
+
 
 fillContainer()
 generate()
